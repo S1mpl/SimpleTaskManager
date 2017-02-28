@@ -1,0 +1,37 @@
+{% extends "login_logout.html" %}
+{% block title %}Вход{% endblock %}
+{% block ll %}
+<div class="container form-cont">
+    <div class="form-lr">
+        {% include 'generic/messages.html' %}
+        <form action="" method="post" class="form-control">
+            <h2>Регистрация</h2>
+            {% csrf_token %}
+            <div class="form-padding">
+                <input type="email" id="id_username" class="form-control" placeholder="Email" name="email" required>
+            </div>
+            <div class="form-padding">
+                <input type="text" id="id_username" class="form-control" placeholder="Имя" name="firstname" required>
+            </div>
+            <div class="form-padding">
+                <input type="text" id="id_username" class="form-control" placeholder="Фамилия" name="lastname" required>
+            </div>
+            {{ form.role.errors }}
+            <select class="form-control" id="role" name="role">
+                <option value="Developer">Developer</option>
+                <option value="Manager">Manager</option>
+            </select>
+            <div class="form-padding">
+                <input type="password" id="id_password" class="form-control form-padding" placeholder="Пароль" name="password1" required>
+            </div>
+            <div class="form-padding">
+                <input type="password" id="id_password" class="form-control form-padding" placeholder="Повторить пароль" name="password2" required>
+            </div>
+            <div class="submit-button">
+                <input type="submit" value="Войти" class="btn btn-lg btn-primary btn-block">
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

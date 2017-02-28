@@ -1,0 +1,22 @@
+{% extends "login_logout.html" %}
+{% block title %}Вход{% endblock %}
+{% block ll %}
+<div class="container form-cont">
+    <div class="form-lr">
+        <form action="" method="post" class="form-control">
+            <h2>Вход</h2>
+            {% csrf_token %}
+            <div class="form-padding">
+                <input type="email" id="id_username" class="form-control" placeholder="Email" name="username" required>
+            </div>
+            <div class="form-padding">
+                <input type="password" id="id_password" class="form-control form-padding" placeholder="Пароль" name="password" required>
+            </div>
+            <div class="submit-button">
+                <input type="submit" value="Войти" class="btn btn-lg btn-primary btn-block">
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
