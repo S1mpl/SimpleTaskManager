@@ -3,6 +3,42 @@
 
 {% block content %}
     <div class="container form-cont">
-
+        <h2>Проекты</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Краткое описание</th>
+                    <th>Срок проекта</th>
+                    {% if user.role == 'Manager' or user.is_admin%}
+                        <th>Дейсвтие</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+            {% for project in projects %}
+                <tr>
+                <td><a href="{% url "project_task" pk=project.pk %}">{{ project.title }}</a></td>
+                <td>{{ project.description }}</td>
+                <td>{{ project.due_date }}</td>
+                {% if user.role == 'Manager' or user.is_admin%}
+                    <td>
+                        <div class="dropdown">
+                              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  Действия
+                              </button>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                  <a class="dropdown-item" href="{% url "project_edit" pk=project.pk %}">Редактирвоать</a>
+                                  <a class="dropdown-item" href="{% url "project_delete" pk=project.pk %}">Удалить</a>
+                              </div>
+                        </div>
+                    </td>
+                {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% include 'generic/pagination.html' %}
     </div>
+
 {% endblock %}
