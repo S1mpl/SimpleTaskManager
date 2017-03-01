@@ -16,11 +16,12 @@
             <div class="form-padding">
                 <input type="text" id="id_username" class="form-control" placeholder="Фамилия" name="lastname" required>
             </div>
-            {{ form.role.errors }}
-            <select class="form-control" id="role" name="role">
-                <option value="Developer">Developer</option>
-                <option value="Manager">Manager</option>
-            </select>
+            <div class="form-padding">
+                <select class="form-control" id="role" name="role">
+                    <option value="Developer">Developer</option>
+                    <option value="Manager">Manager</option>
+                </select>
+            </div>
             <div class="form-padding">
                 <input type="password" id="id_password" class="form-control form-padding" placeholder="Пароль" name="password1" required>
             </div>

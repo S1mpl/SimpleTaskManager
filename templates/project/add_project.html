@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+    <div class="container form-cont">
+        {% include 'generic/messages.html' %}
+            <form action="" method="post" class="form-control">
+                <h2>Создать проект</h2>
+                {% csrf_token %}
+                <div class="form-group row">
+                    <label for="text-input" class="col-2 col-form-label">Название</label>
+                    <div class="col-10">
+                        <input type="text" id="id_title" class="form-control" placeholder="Название" name="title" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="textarea-input" class="col-2 col-form-label">Описание</label>
+                    <div class="col-10">
+                        <textarea name="description" id="id_description" style="width: 100%" rows="10" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                  <label for="date-input" class="col-2 col-form-label">Срок проекта</label>
+                  <div class="col-10">
+                    <input class="form-control" type="date" id="example-date-input" name="due_date">
+                  </div>
+                </div>
+
+                 <div class="form-group row">
+                  <label for="date-input" class="col-2 col-form-label">Менеджеры</label>
+                  <div class="col-10">
+                      {% for manager in managers %}
+                          <div class="checkbox">
+                              <label>
+                                  <input type="checkbox" name="users" value="{{ manager.id }}" style="padding: 10px" {% if user.id == manager.id %} checked disabled {% endif %}>
+                                  <span class="custom-control-description">{{ manager.firstname }} {{ manager.lastname }} ({{ manager.email }})</span>
+                              </label>
+                          </div>
+                      {% endfor %}
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="date-input" class="col-2 col-form-label">Разработчики</label>
+                  <div class="col-10">
+                      {% for developer in developers %}
+                          <div class="checkbox">
+                              <label>
+                                  <input type="checkbox" name="users" value="{{ developer.id }}" style="padding: 10px">
+                                  <span class="custom-control-description">{{ developer.firstname }} {{ developer.lastname }} ({{ developer.email }})</span>
+                              </label>
+                          </div>
+                      {% endfor %}
+                  </div>
+                </div>
+
+                <div class="submit-button">
+                    <input type="submit" value="Создать" class="btn btn-lg btn-primary btn-block">
+                </div>
+            </form>
+    </div>
+{% endblock %}

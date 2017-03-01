@@ -33,13 +33,13 @@ class User(AbstractBaseUser, PermissionsMixin, models.Model):
         verbose_name='Email'
     )
     firstname = models.CharField(
-        'Имя',
+        verbose_name='Имя',
         max_length=40,
         null=True,
         blank=True
     )
     lastname = models.CharField(
-        'Фамилия',
+        verbose_name='Фамилия',
         max_length=40,
         null=True,
         blank=True
@@ -85,7 +85,7 @@ class User(AbstractBaseUser, PermissionsMixin, models.Model):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
-    object = UserManager()
+    objects = UserManager()
 
     class Meta:
         verbose_name = 'Пользователь'
