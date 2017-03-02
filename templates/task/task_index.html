@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+    {% include 'generic/messages.html' %}
+    <div class="container form-cont">
+        <h2>Задачи</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Краткое описание</th>
+                    <th>Срок задания</th>
+                    <th>Приоритет</th>
+                    {% if user.role == 'Manager' or user.is_admin%}
+                        <th>Дейсвтие</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+            {% for task in tasks %}
+                <tr {% if task.is_active == 0 %} class="table-success" {% elif task.priority >= 4 %} class="table-danger" {% endif %}>
+                <td><a href="{% url "task_detail" pk=task.pk pk_project=project_id %}">{% if task.is_active == 0 %}<s>{{ task.title }}</s>{% else %}{{ task.title }}{% endif %}</a></td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.due_date }}</td>
+                <td>{{ task.priority }}</td>
+
+
+                {% if user.role == 'Developer' and task.is_active == 1%}
+                    <td>
+                        <a href="{% url 'task_end' pk=task.id pk_project=project_id %}" class="btn btn-danger">Завершить задание</a>
+                    </td>
+                {% endif %}
+                {% if user.role == 'Manager' or user.is_admin%}
+                    <td>
+                        <div class="dropdown">
+                              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  Действия
+                              </button>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                  {% if task.is_active == 1 %}
+                                      <a href="{% url 'task_end' pk=task.id pk_project=pk_project %}" class="dropdown-item">Завершить задание</a>
+                                  {% else %}
+                                      <a href="{% url 'task_restart' pk=task.id pk_project=pk_project %}" class="dropdown-item">Востановить задание</a>
+                                  {% endif %}
+                                  <a class="dropdown-item" href="{% url "task_edit" pk=task.pk  pk_project=project_id %}">Редактирвоать</a>
+                                  <a class="dropdown-item" href="{% url "task_delete" pk=task.pk  pk_project=project_id %}">Удалить</a>
+                              </div>
+                        </div>
+                    </td>
+                {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% include 'generic/pagination.html' %}
+    </div>
+
+{% endblock %}

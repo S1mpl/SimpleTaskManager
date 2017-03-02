@@ -87,7 +87,7 @@ class ProjectUpdate(TemplateView):
 
     def get(self, request, *args, **kwargs):
         self.project = Project.objects.get(pk = self.kwargs['pk'])
-        self.user = Project.objects.filter(users=request.user)
+        self.user = Project.objects.filter(pk = self.kwargs['pk'], users=request.user)
         if (request.user.role == "Manager" and self.user) or request.user.is_admin :
             self.form = ProjectCreateForm(instance=self.project)
             self.manager = User.objects.filter(role='Manager')

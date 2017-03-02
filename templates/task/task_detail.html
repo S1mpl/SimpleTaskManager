@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+    {% include 'generic/messages.html' %}
+    <div class="container form-cont">
+        <div class="card">
+              <div class="card-header">
+                  {{ task.title }}
+              </div>
+              <div class="card-block">
+                    <h5>Описание:</h5>
+                    <p class="card-text">{{ task.description }}</p>
+                    <h5>Cрок выполнения:</h5>
+                    <p class="card-text">{{ task.due_date }}</p>
+                    <h5>Приоритет:</h5>
+                    <p class="card-text">{{ task.priority }}</p>
+                    <h5>Менеджер:</h5>
+                    <p class="card-text">{{ task.create_manager.firstname }} {{ task.create_manager.lastname }} ({{ task.create_manager.email }})</p>
+                    <h5>Список приклепленных файлов:</h5>
+                    <p class="card-text">
+                        {% for file in files %}
+                            <a href="{{ file.files.url }}">{{ file.files.name }}</a><br>
+                        {% endfor %}
+                    </p>
+                    {% if task.is_active == 1 %}
+                        <a href="{% url 'task_end' pk=task.id pk_project=pk_project %}" class="btn btn-danger">Завершить задание</a>
+                    {% endif %}
+
+                    {% if task.is_active == 0 and user.role == 'Manager' or user.is_admin %}
+                        <a href="{% url 'task_end' pk=task.id pk_project=pk_project %}" class="btn btn-success">Востановить задание</a>
+                    {% endif %}
+
+              </div>
+        </div>
+    </div>
+
+{% endblock %}
