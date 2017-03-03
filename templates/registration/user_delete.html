@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
-{% block title %}Удалить проект{% endblock %}
+{% block title %}Удалить пользователя{% endblock %}
 
 {% block content %}
     <div class="container form-cont">
         <div class="form-lr">
             <form action="" method="post" class="form-control">
-                <h2>Удалить проект</h2>
+                <h2>Удалить пользователя</h2>
                 {% csrf_token %}
-                <p>Вы точно уверены что хотите удалить проект?</p>
+                <p>Вы точно уверены что хотите удалить пользователя?</p>
                 <div class="submit-button">
                     <input type="submit" value="Удалить" class="btn btn-lg btn-primary btn-block">
                 </div>

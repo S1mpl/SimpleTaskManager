@@ -19,6 +19,7 @@ class UserManager(BaseUserManager):
         user = self.create_user(email, password)
         user.role = 'Admin'
         user.is_admin = True
+        user.is_superuser = True
         user.save(using=self._db)
         return user
 
@@ -31,6 +32,10 @@ class User(AbstractBaseUser, PermissionsMixin, models.Model):
         unique=True,
         db_index=True,
         verbose_name='Email'
+    )
+    password = models.CharField(
+        verbose_name='Пароль',
+        max_length=255
     )
     firstname = models.CharField(
         verbose_name='Имя',
@@ -48,17 +53,15 @@ class User(AbstractBaseUser, PermissionsMixin, models.Model):
         max_length=255,
         verbose_name='Права пользователя'
     )
-    avatar = models.ImageField(
-        blank=True,
-        null=True,
-        upload_to='uploads/avatar',
-        verbose_name='Аватар'
-    )
     is_active = models.BooleanField(
         default=True,
         verbose_name='Активен'
     )
     is_admin = models.BooleanField(
+        default=False,
+        verbose_name='Админ'
+    )
+    is_superuser = models.BooleanField(
         default=False,
         verbose_name='Админ'
     )
@@ -88,5 +91,6 @@ class User(AbstractBaseUser, PermissionsMixin, models.Model):
     objects = UserManager()
 
     class Meta:
+        ordering = ['-register_date']
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'

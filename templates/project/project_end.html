@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
-{% block title %}Заверишть задание{% endblock %}
+{% block title %}Завершить проект{% endblock %}
 
 {% block content %}
     <div class="container form-cont">
         <div class="form-lr">
             <form action="" method="post" class="form-control">
-                <h2>Завершить задание</h2>
+                <h2>Завершить проект</h2>
                 {% csrf_token %}
-                <p>Вы точно уверены что хотите завершить задание?</p>
+                <p>Вы точно уверены что хотите завершить проект?</p>
                 <div class="submit-button">
                     <input type="submit" value="Завершить" class="btn btn-lg btn-primary btn-block">
                 </div>

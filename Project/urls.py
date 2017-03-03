@@ -1,7 +1,6 @@
 from django.conf.urls import url, include
-from django.contrib.auth import views
 from django.contrib.auth.decorators import  login_required
-from Project.views import ProjectListView, ProjectCreate, ProjectDelete, ProjectUpdate
+from Project.views import ProjectListView, ProjectCreate, ProjectDelete, ProjectUpdate, ProjectEnd, ProjectRestart
 
 urlpatterns = [
     url(r'^$',  login_required(ProjectListView.as_view()), name='main'),
@@ -10,5 +9,6 @@ urlpatterns = [
     url(r'^project/(?P<pk>\d+)/edit/$', login_required(ProjectUpdate.as_view()), name='project_edit'),
     url(r'^project/(?P<pk>\d+)/delete/$', login_required(ProjectDelete.as_view()), name='project_delete'),
 
-    url(r'^project/(?P<pk>\d+)/end/$', login_required(ProjectDelete.as_view()), name='project_end'),
+    url(r'^project/(?P<pk>\d+)/end/$', login_required(ProjectEnd.as_view()), name='project_end'),
+    url(r'^project/(?P<pk>\d+)/restart/$', login_required(ProjectRestart.as_view()), name='project_restart'),
 ]

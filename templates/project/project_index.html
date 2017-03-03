@@ -1,8 +1,14 @@
 {% extends 'base.html' %}
-{% block title %}Главная{% endblock %}
+{% block title %}Проекты{% endblock %}
 
 {% block content %}
     <div class="container form-cont">
+        {% include 'generic/messages.html' %}
+        {% if user.role == 'Manager' or user.is_admin %}
+            <p>
+                <a href="{% url 'project_add' %}" class="btn btn-success" style="width: 100%">Создать проект</a>
+            </p>
+        {% endif %}
         <h2>Проекты</h2>
         <table class="table table-striped">
             <thead>
@@ -10,6 +16,7 @@
                     <th>Название</th>
                     <th>Краткое описание</th>
                     <th>Срок проекта</th>
+                    <th>Дата создания</th>
                     {% if user.role == 'Manager' or user.is_admin%}
                         <th>Дейсвтие</th>
                     {% endif %}
@@ -17,10 +24,11 @@
             </thead>
             <tbody>
             {% for project in projects %}
-                <tr>
-                <td><a href="{% url "task_main" pk_project=project.pk %}">{{ project.title }}</a></td>
+                <tr {% if project.is_active == 0 %} class="table-success" {% endif %}>
+                <td><a href="{% url "task_main" pk_project=project.pk %}">{% if project.is_active == 0 %}<s>{{ project.title }}</s>{% else %}{{ project.title }}{% endif %}</a></td>
                 <td>{{ project.description }}</td>
                 <td>{{ project.due_date }}</td>
+                <td>{{ project.date_create }}</td>
                 {% if user.role == 'Manager' or user.is_admin%}
                     <td>
                         <div class="dropdown">
@@ -28,7 +36,11 @@
                                   Действия
                               </button>
                               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                  <a class="dropdown-item" href="{% url "project_end" pk=project.pk %}">Завершить проект</a>
+                                  {% if project.is_active == 1 %}
+                                       <a class="dropdown-item" href="{% url "project_end" pk=project.pk %}">Завершить проект</a>
+                                  {% else %}
+                                      <a href="{% url 'project_restart' pk=project.id  %}" class="dropdown-item">Восстановить задание</a>
+                                  {% endif %}
                                   <a class="dropdown-item" href="{% url "project_edit" pk=project.pk %}">Редактирвоать</a>
                                   <a class="dropdown-item" href="{% url "project_delete" pk=project.pk %}">Удалить</a>
                               </div>

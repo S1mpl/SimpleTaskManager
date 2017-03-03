@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Главная{% endblock %}
+{% block title %}Редактировать проект{% endblock %}
 
 {% block content %}
     <div class="container form-cont">
@@ -20,44 +20,44 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                  <label for="date-input" class="col-2 col-form-label">Срок проекта</label>
-                  <div class="col-10">
-                    <input class="form-control" type="date" id="example-date-input" name="due_date" value="{{ project.due_date|date:'Y-m-d' }}">
-                  </div>
-                </div>
-
-                 <div class="form-group row">
-                  <label for="date-input" class="col-2 col-form-label">Менеджеры</label>
-                  <div class="col-10">
-                      {% for manager in managers %}
-                          <div class="checkbox">
-                              <label>
-                              {% if user.is_admin %}
-                                    <input type="checkbox" name="users" value="{{ manager.id }}" style="padding: 10px" {% for mn in project.users.all %}{% if mn.id == manager.id %} checked {% endif %}{% endfor %}>
-                                    <span class="custom-control-description">{{ manager.firstname }} {{ manager.lastname }} ({{ manager.email }})</span>
-                              {% else %}
-                                  <input type="checkbox" name="users" value="{{ manager.id }}" style="padding: 10px" {% for mn in project.users.all %}{% if mn.id == manager.id %} checked disabled {% endif %}{% endfor %}>
-                                  {% if user.id == manager.id %} <input type="hidden" name="users" value="{{ manager.id }}">{% endif %}
-                                  <span class="custom-control-description">{{ manager.firstname }} {{ manager.lastname }} ({{ manager.email }})</span>
-                              {% endif %}
-                              </label>
-                          </div>
-                      {% endfor %}
-                  </div>
+                    <label for="date-input" class="col-2 col-form-label">Срок проекта</label>
+                    <div class="col-10">
+                        <input class="form-control" type="date" id="example-date-input" name="due_date" value="{{ project.due_date|date:'Y-m-d' }}">
+                    </div>
                 </div>
 
                 <div class="form-group row">
-                  <label for="date-input" class="col-2 col-form-label">Разработчики</label>
-                  <div class="col-10">
-                      {% for developer in developers %}
-                          <div class="checkbox">
-                              <label>
-                                  <input type="checkbox" name="users" value="{{ developer.id }}" style="padding: 10px" {% for mn in project.users.all %}{% if mn.id == developer.id %} checked {% endif %}{% endfor %}>
-                                  <span class="custom-control-description">{{ developer.firstname }} {{ developer.lastname }} ({{ developer.email }})</span>
-                              </label>
-                          </div>
-                      {% endfor %}
-                  </div>
+                    <label for="date-input" class="col-2 col-form-label">Менеджеры</label>
+                    <div class="col-10">
+                        {% for manager in managers %}
+                            <div class="checkbox">
+                                <label>
+                                {% if user.is_admin %}
+                                    <input type="checkbox" name="users" value="{{ manager.id }}" style="padding: 10px" {% for mn in project.users.all %}{% if mn.id == manager.id %} checked {% endif %}{% endfor %}>
+                                    <span class="custom-control-description">{{ manager.firstname }} {{ manager.lastname }} ({{ manager.email }})</span>
+                                {% else %}
+                                    <input type="checkbox" name="users" value="{{ manager.id }}" style="padding: 10px" {% for mn in project.users.all %}{% if mn.id == manager.id %} checked disabled {% endif %}{% endfor %}>
+                                    {% if user.id == manager.id %} <input type="hidden" name="users" value="{{ manager.id }}">{% endif %}
+                                    <span class="custom-control-description">{{ manager.firstname }} {{ manager.lastname }} ({{ manager.email }})</span>
+                                {% endif %}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="date-input" class="col-2 col-form-label">Разработчики</label>
+                    <div class="col-10">
+                        {% for developer in developers %}
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="users" value="{{ developer.id }}" style="padding: 10px" {% for mn in project.users.all %}{% if mn.id == developer.id %} checked {% endif %}{% endfor %}>
+                                    <span class="custom-control-description">{{ developer.firstname }} {{ developer.lastname }} ({{ developer.email }})</span>
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
 
                 <div class="submit-button">

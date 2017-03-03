@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Пользователи{% endblock %}
+
+{% block content %}
+    <div class="container form-cont">
+        {% include 'generic/messages.html' %}
+        <p>
+            <a href="{% url 'register' %}" class="btn btn-success" style="width: 100%">Создать пользователя</a>
+        </p>
+        <h2>Пользователи</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Имя</th>
+                    <th>Фамилия</th>
+                    <th>Email</th>
+                    <th>Роль</th>
+                    <th>Дата создания</th>
+                    <th>Дейсвтие</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for usere in users %}
+                <tr>
+                    <td>{{ usere.id }}</td>
+                    <td>{{ usere.firstname }}</td>
+                    <td>{{ usere.lastname }}</td>
+                    <td>{{ usere.email }}</td>
+                    <td>{{ usere.role }}</td>
+                    <td>{{ usere.register_date }}</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      Действия
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="{% url "update_user" pk=usere.id %}">Редактирвоать</a>
+                                <a class="dropdown-item" href="{% url "delete_user" pk=usere.id %}">Удалить</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% include 'generic/pagination.html' %}
+    </div>
+
+{% endblock %}

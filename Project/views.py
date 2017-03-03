@@ -3,9 +3,7 @@ from generic.controller import PageNumberView
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 from django.contrib import messages
-from django.views.generic.detail import DetailView
 from Project.models import Project
-from django.views.generic.list import ListView
 from django.db.models import Q
 from django.views.generic.base import TemplateView
 from Project.forms import ProjectCreateForm
@@ -39,6 +37,7 @@ class ProjectListView(PageNumberView, TemplateView):
         context = super(ProjectListView, self).get_context_data(**kwargs)
         context["projects"] = self.projects
         context['paginator'] = self.paginator
+        context['current_url'] = self.request.path
         return context
 
 
@@ -109,10 +108,14 @@ class ProjectUpdate(TemplateView):
         if (request.user.role == "Manager" and self.user) or request.user.is_admin:
             self.form = ProjectCreateForm(request.POST,instance=self.project)
             if self.form.is_valid():
-                self.form.save()
-                return redirect(reverse('main'))
+                if datetime.strptime(request.POST['due_date'], '%Y-%m-%d') <= datetime.today():
+                    messages.add_message(request, messages.ERROR, 'Введенная дата неверна')
+                    return redirect(reverse('main'))
+                else:
+                    self.form.save()
+                    return redirect(reverse('main'))
             else:
-                return super(ProjectUpdate, self).get(request, *args, **kwargs)
+                return redirect(reverse('main'))
         else:
             return redirect(reverse('main'))
 
@@ -138,3 +141,47 @@ class ProjectDelete(DeleteView):
             return super(ProjectDelete, self).post(request, *args, **kwargs)
         else:
             return redirect(reverse('main'))
+
+class ProjectEnd(TemplateView):
+    template_name = 'project/project_end.html'
+    manager = None
+    project = None
+
+    def get(self, request, *args, **kwargs):
+        self.manager = Project.objects.filter(pk=self.kwargs['pk'], users=request.user)
+        if (request.user.role == 'Manager' and self.manager) or request.user.is_admin:
+            return super(ProjectEnd, self).get(request, *args, **kwargs)
+        else:
+            raise Http404
+
+    def post(self, request, *args, **kwargs):
+        self.manager = Project.objects.filter(pk=self.kwargs['pk'], users=request.user)
+        if (request.user.role == 'Manager' and self.manager) or request.user.is_admin:
+            self.project = Project.objects.get(pk=self.kwargs['pk'])
+            self.project.is_active = 0
+            self.project.save()
+            return redirect(reverse('main'))
+        else:
+            raise Http404
+
+class ProjectRestart(TemplateView):
+    template_name = 'project/project_restart.html'
+    manager = None
+    project = None
+
+    def get(self, request, *args, **kwargs):
+        self.manager = Project.objects.filter(pk=self.kwargs['pk'], users=request.user)
+        if (request.user.role == 'Manager' and self.manager) or request.user.is_admin:
+            return super(ProjectRestart, self).get(request, *args, **kwargs)
+        else:
+            raise Http404
+
+    def post(self, request, *args, **kwargs):
+        self.manager = Project.objects.filter(pk=self.kwargs['pk'], users=request.user)
+        if (request.user.role == 'Manager' and self.manager) or request.user.is_admin:
+            self.project = Project.objects.get(pk=self.kwargs['pk'])
+            self.project.is_active = 1
+            self.project.save()
+            return redirect(reverse('main'))
+        else:
+            raise Http404

@@ -32,24 +32,24 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                  <label for="date-input" class="col-2 col-form-label">Срок выполнения</label>
-                  <div class="col-10">
-                    <input class="form-control" type="datetime-local" id="example-datetime-input" name="due_date">
-                  </div>
+                    <label for="date-input" class="col-2 col-form-label">Срок выполнения</label>
+                    <div class="col-10">
+                        <input class="form-control" type="datetime-local" id="example-datetime-input" name="due_date">
+                    </div>
                 </div>
 
                 <div class="form-group row">
-                  <label for="date-input" class="col-2 col-form-label">Разработчики</label>
-                  <div class="col-10">
-                      {% for developer in developers %}
-                          <div class="checkbox">
-                              <label>
-                                  <input type="radio" name="developer" value="{{ developer.users }}">
-                                  <span class="custom-control-description">{{ developer.users__firstname }} {{ developer.users__lastname }} ({{ developer.users__email }})</span>
-                              </label>
-                          </div>
-                      {% endfor %}
-                  </div>
+                    <label for="date-input" class="col-2 col-form-label">Разработчики</label>
+                    <div class="col-10">
+                        {% for developer in developers %}
+                            <div class="checkbox">
+                                 <label>
+                                    <input type="radio" name="developer" value="{{ developer.users }}">
+                                    <span class="custom-control-description">{{ developer.users__firstname }} {{ developer.users__lastname }} ({{ developer.users__email }})</span>
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
                 <div class="form-group">
                     {% include 'generic/formset.html' %}

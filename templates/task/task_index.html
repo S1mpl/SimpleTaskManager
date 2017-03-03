@@ -1,9 +1,14 @@
 {% extends 'base.html' %}
-{% block title %}Главная{% endblock %}
+{% block title %}Задания{% endblock %}
 
 {% block content %}
-    {% include 'generic/messages.html' %}
     <div class="container form-cont">
+        {% include 'generic/messages.html' %}
+        {% if user.role == 'Manager' or user.is_admin %}
+            <p>
+                <a href="{% url 'task_add' pk_project=project_id %}" class="btn btn-success" style="width: 100%">Создать задание</a>
+            </p>
+        {% endif %}
         <h2>Задачи</h2>
         <table class="table table-striped">
             <thead>
@@ -21,7 +26,7 @@
             {% for task in tasks %}
                 <tr {% if task.is_active == 0 %} class="table-success" {% elif task.priority >= 4 %} class="table-danger" {% endif %}>
                 <td><a href="{% url "task_detail" pk=task.pk pk_project=project_id %}">{% if task.is_active == 0 %}<s>{{ task.title }}</s>{% else %}{{ task.title }}{% endif %}</a></td>
-                <td>{{ task.description }}</td>
+                <td><p style=" white-space: nowrap; overflow: hidden;text-overflow: ellipsis; max-width: 400px; ">{{ task.description }}</p></td>
                 <td>{{ task.due_date }}</td>
                 <td>{{ task.priority }}</td>
 
@@ -41,7 +46,7 @@
                                   {% if task.is_active == 1 %}
                                       <a href="{% url 'task_end' pk=task.id pk_project=pk_project %}" class="dropdown-item">Завершить задание</a>
                                   {% else %}
-                                      <a href="{% url 'task_restart' pk=task.id pk_project=pk_project %}" class="dropdown-item">Востановить задание</a>
+                                      <a href="{% url 'task_restart' pk=task.id pk_project=pk_project %}" class="dropdown-item">Восстановить задание</a>
                                   {% endif %}
                                   <a class="dropdown-item" href="{% url "task_edit" pk=task.pk  pk_project=project_id %}">Редактирвоать</a>
                                   <a class="dropdown-item" href="{% url "task_delete" pk=task.pk  pk_project=project_id %}">Удалить</a>

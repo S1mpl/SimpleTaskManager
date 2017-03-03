@@ -1,65 +1,66 @@
 {% extends 'base.html' %}
-{% block title %}Создать задание{% endblock %}
+{% block title %}Обновить задание{% endblock %}
 
 {% block content %}
     <div class="container form-cont">
-            {% include 'generic/messages.html' %}
-            <form action="" method="post" class="form-control"  enctype="multipart/form-data">
-                <h2>Создать задание</h2>
-                {% csrf_token %}
-                <div class="form-group row">
-                    <label for="text-input" class="col-2 col-form-label">Название</label>
-                    <div class="col-10">
-                        <input type="text" id="id_title" class="form-control" placeholder="Название" name="title" value="{{ task.title }}" required>
-                    </div>
+        {% include 'generic/messages.html' %}
+        <form action="" method="post" class="form-control"  enctype="multipart/form-data">
+            <h2>Обновить задание</h2>
+            {% csrf_token %}
+            <div class="form-group row">
+                <label for="text-input" class="col-2 col-form-label">Название</label>
+                <div class="col-10">
+                    <input type="text" id="id_title" class="form-control" placeholder="Название" name="title" value="{{ task.title }}" required>
                 </div>
-                <div class="form-group row">
-                    <label for="textarea-input" class="col-2 col-form-label">Описание</label>
-                    <div class="col-10">
-                        <textarea name="description" id="id_description" style="width: 100%" rows="10" class="form-control">{{ task.description }}</textarea>
-                    </div>
+            </div>
+            <div class="form-group row">
+                <label for="textarea-input" class="col-2 col-form-label">Описание</label>
+                <div class="col-10">
+                    <textarea name="description" id="id_description" style="width: 100%" rows="10" class="form-control">{{ task.description }}</textarea>
                 </div>
-                <div class="form-group row">
-                    <label for="textarea-input" class="col-2 col-form-label">Приоритет</label>
-                    <div class="col-10">
-                        <select name="priority" class="form-control">
-                            <option value="5" {% if task.priority == 5 %} selected {% endif %}>(!!) Очень важный</option>
-                            <option value="4" {% if task.priority == 4 %} selected {% endif %}>(!) Важный</option>
-                            <option value="3" {% if task.priority == 3 %} selected {% endif %}>Высокий</option>
-                            <option value="2" {% if task.priority == 2 %} selected {% endif %}>Средний</option>
-                            <option value="1" {% if task.priority == 1 %} selected {% endif %}>Низкий</option>
-                        </select>
-                    </div>
+            </div>
+            <div class="form-group row">
+                <label for="textarea-input" class="col-2 col-form-label">Приоритет</label>
+                <div class="col-10">
+                    <select name="priority" class="form-control">
+                        <option value="5" {% if task.priority == 5 %} selected {% endif %}>(!!) Очень важный</option>
+                        <option value="4" {% if task.priority == 4 %} selected {% endif %}>(!) Важный</option>
+                        <option value="3" {% if task.priority == 3 %} selected {% endif %}>Высокий</option>
+                        <option value="2" {% if task.priority == 2 %} selected {% endif %}>Средний</option>
+                        <option value="1" {% if task.priority == 1 %} selected {% endif %}>Низкий</option>
+                    </select>
                 </div>
-                <div class="form-group row">
-                  <label for="date-input" class="col-2 col-form-label">Срок выполнения</label>
-                  <div class="col-10">
+            </div>
+            <div class="form-group row">
+                <label for="date-input" class="col-2 col-form-label">Срок выполнения</label>
+                <div class="col-10">
                     <input class="form-control" type="datetime-local" id="example-datetime-input" name="due_date" value="{{ task.due_date|date:'Y-m-d\TH:i' }}">
-                  </div>
                 </div>
+            </div>
 
-                <div class="form-group row">
-                  <label for="date-input" class="col-2 col-form-label">Разработчики</label>
-                  <div class="col-10">
-                      {% for developer in developers %}
-                          <div class="checkbox">
-                              <label>
-                                  <input type="radio" name="developer" value="{{ developer.users }}" {% for dev in task_dev %} {% if dev.developer == developer.users%} checked {% endif %}{% endfor %}>
-                                  <span class="custom-control-description">{{ developer.users__firstname }} {{ developer.users__lastname }} ({{ developer.users__email }})</span>
-                              </label>
-                          </div>
-                      {% endfor %}
-                  </div>
+            <div class="form-group row">
+                <label for="date-input" class="col-2 col-form-label">Разработчики</label>
+                <div class="col-10">
+                    {% for developer in developers %}
+                        <div class="checkbox">
+                            <label>
+                                <input type="radio" name="developer" value="{{ developer.users }}" {% for dev in task_dev %} {% if dev.developer == developer.users%} checked {% endif %}{% endfor %}>
+                                <span class="custom-control-description">{{ developer.users__firstname }} {{ developer.users__lastname }} ({{ developer.users__email }})</span>
+                            </label>
+                        </div>
+                    {% endfor %}
                 </div>
-                <div class="form-group">
-                    {% include 'generic/formset.html' %}
-                </div>
-                <div class="form-group">
-                    <input type="button" value="Добавить еще" id="add_more" class="btn btn-secondary">
-                </div>
-                <div class="submit-button">
-                    <input type="submit" value="Обновить" class="btn btn-lg btn-primary btn-block">
-                </div>
-            </form>
+            </div>
+
+            <div class="form-group">
+                {% include 'generic/formset.html' %}
+            </div>
+            <div class="form-group">
+                <input type="button" value="Добавить еще" id="add_more" class="btn btn-secondary">
+            </div>
+            <div class="submit-button">
+                <input type="submit" value="Обновить" class="btn btn-lg btn-primary btn-block">
+            </div>
+        </form>
     </div>
 {% endblock %}

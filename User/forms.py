@@ -34,7 +34,8 @@ class UserCreationForm(forms.ModelForm):
 class UserChangeForm(forms.ModelForm):
     password = ReadOnlyPasswordHashField(
         widget=forms.PasswordInput,
-        required=False
+        required=False,
+        label='Пароль(пароль изменится на тот который введете, если поле пустое то пароль не изменится)',
     )
 
     def save(self, commit=True):
@@ -48,7 +49,12 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = get_user_model()
-        fields = ['email', ]
+        fields = ['email', 'firstname', 'lastname']
+
+    def __init__(self, *args, **kwargs):
+        super(forms.ModelForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'
 
 
 class LoginForm(forms.Form):

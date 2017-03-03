@@ -1,53 +1,44 @@
 {% load staticfiles %}
 <!doctype html>
 <html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link type="text/css" href="{% static 'css/main.css' %}" rel="stylesheet">
-    <link type="text/css" href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-    {% block additional_css %}
-    {% endblock %}
-    {% block additional_js %}
-    {% endblock %}
-    <title>{% block title %}{% endblock %} :: SimpleTaskManager</title>
-  </head>
-  <body>
-{% if user.is_authenticated %}
-
-    <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-        <a class="navbar-brand" href="#">TaskManager</a>
-
-        <div class="collapse navbar-collapse" id="navbarColor01">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="{% url 'main' %}">Главная</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Features</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Pricing</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
-            </li>
-          </ul>
-          <form class="form-inline">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search">
-            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Поиск</button>
-          </form>
-
-           <a class="nav-link" href="{% url 'logout' %}">Выйти</a>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link type="text/css" href="{% static 'css/main.css' %}" rel="stylesheet">
+        <link type="text/css" href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+        {% block additional_css %}
+        {% endblock %}
+        {% block additional_js %}
+        {% endblock %}
+        <title>{% block title %}{% endblock %} :: SimpleTaskManager</title>
+    </head>
+    <body>
+        {% if user.is_authenticated %}
+        <div class="container">
+            <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+                <a class="navbar-brand" href="{% url 'main' %}">TaskManager</a>
+                <div class="collapse navbar-collapse" id="navbarColor01">
+                    <ul class="navbar-nav mr-auto">
+                        {% url "main" as page_url %}
+                        <li class="nav-item {% if page_url == current_url %}active{% endif %}">
+                            <a class="nav-link" href="{% url 'main' %}">Главная</a>
+                        </li>
+                        {% if user.role == "Manager" or user.is_admin %}
+                            {% url "users" as page_users %}
+                            <li class="nav-item {% if page_users == current_url %}active{% endif %}">
+                                <a class="nav-link" href="{% url "users" %}">Пользователи</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    <a class="nav-link" style="color: white">{{ user.email }}</a>
+                    <a class="nav-link" href="{% url 'logout' %}">Выйти</a>
+                </div>
+            </nav>
         </div>
-    </nav>
-{% endif %}
-    {% block content %}
-    {% endblock %}
-  </body>
-  <script src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
-  <script src="{% static 'js/bootstrap.min.js' %}"></script>
-  <script src="{% static 'js/add_more.js' %}"></script>
+        {% endif %}
+        {% block content %}
+        {% endblock %}
+    </body>
+    <script src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/add_more.js' %}"></script>
 </html>

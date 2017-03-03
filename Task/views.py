@@ -1,21 +1,16 @@
-from generic.controller import PageNumberView
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.views.generic.detail import DetailView
 from Project.models import Project
-from django.views.generic.list import ListView
-from django.db.models import Q
 from django.views.generic.base import TemplateView
-from Project.forms import ProjectCreateForm
 from datetime import datetime
 from django.core.paginator import Paginator, EmptyPage
-from django.http import Http404, HttpResponse
+from django.http import Http404
 from django.views.generic.edit import DeleteView
 from Task.models import Task, TaskFiles
 from django.forms.models import inlineformset_factory
 from Task.forms import TaskCreateForm
-from User.models import User
 
 TaskFilesFormset = inlineformset_factory(Task, TaskFiles, fields=['files'], can_delete=False,  extra=1, max_num=10)
 
@@ -60,7 +55,10 @@ class TaskCreate(TemplateView):
 
     def get(self, request, *args, **kwargs):
         try:
-            self.user = Project.objects.get(pk=self.kwargs['pk_project'], users=request.user.id)
+            if request.user.is_admin:
+                self.user = Project.objects.get(pk=self.kwargs['pk_project'])
+            else:
+                self.user = Project.objects.get(pk=self.kwargs['pk_project'], users=request.user.id)
         except:
             raise Http404()
         if request.user.is_admin or (self.user and request.user.role == 'Manager'):

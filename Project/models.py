@@ -17,6 +17,6 @@ class Project(models.Model):
         return reverse('project_detail', kwargs={'pk': self.pk})
 
     class Meta:
-        ordering = ['-date_create']
+        ordering = ['-is_active','-date_create']
         verbose_name = 'Проект'
         verbose_name_plural = 'Проекты'

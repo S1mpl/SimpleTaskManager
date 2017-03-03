@@ -137,9 +137,8 @@ SITE_ID = 1
 
 MANAGERS = (('admin', 'admin@someserver.ru'),)
 
-EMAIL_HOST = 'someserver.ru'
-EMAIL_HOST_USER = 'user'
-EMAIL_HOST_PASSWORD = '123456789'
-DEFAULT_FROM_EMAIL = 'mailer@someserver.ru'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
 
 LOGIN_REDIRECT_URL = 'main'
