@@ -6,7 +6,7 @@ from Project.models import Project
 from django.views.generic.base import TemplateView
 from datetime import datetime
 from django.core.paginator import Paginator, EmptyPage
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.views.generic.edit import DeleteView
 from Task.models import Task, TaskFiles
 from django.forms.models import inlineformset_factory

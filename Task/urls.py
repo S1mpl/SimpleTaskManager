@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from django.contrib.auth.decorators import  login_required
 from Task.views import TaskListView, TaskCreate, TaskUpdate, TaskDelete, TaskDetail, TaskEnd, TaskRestart
+from . import views
 
 urlpatterns = [
     url(r'^$',  login_required(TaskListView.as_view()), name='task_main'),

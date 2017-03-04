@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'User',
     'Project',
     'Task',
+    'djcelery',
 ]
 
 MIDDLEWARE = [
@@ -142,3 +143,26 @@ EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
 
 LOGIN_REDIRECT_URL = 'main'
+
+import djcelery
+djcelery.setup_loader()
+
+
+BROKER_URL = 'redis://localhost:6379/0'
+
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
+CELERY_TASK_RESULT_EXPIRES = 7*86400
+
+CELERY_SEND_EVENTS = True
+
+CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
+
+from celery.schedules import crontab
+
+CELERYBEAT_SCHEDULE = {
+    'send_mail': {
+        'task': 'Task.tasks.SendMail',
+        'schedule': crontab(minute=0, hour=0)
+    },
+}
