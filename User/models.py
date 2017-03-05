@@ -15,6 +15,32 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+    def create_developer(self, email, password=None):
+        if not email:
+            raise ValueError('Email непременно должен быть указан')
+
+        user = self.model(
+            email=UserManager.normalize_email(email),
+        )
+
+        user.set_password(password)
+        user.role = 'Developer'
+        user.save(using=self._db)
+        return user
+
+    def create_manager(self, email, password=None):
+        if not email:
+            raise ValueError('Email непременно должен быть указан')
+
+        user = self.model(
+            email=UserManager.normalize_email(email),
+        )
+
+        user.set_password(password)
+        user.role = 'Manager'
+        user.save(using=self._db)
+        return user
+
     def create_superuser(self, email, password):
         user = self.create_user(email, password)
         user.role = 'Admin'
